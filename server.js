@@ -22,7 +22,17 @@ app.use(helmet());
 
 // CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  origin: function(origin, callback) {
+    const allowed = process.env.FRONTEND_URL || 'http://localhost:3000';
+    // Remove trailing slash for comparison
+    const cleanOrigin = origin?.replace(/\/$/, '');
+    const cleanAllowed = allowed.replace(/\/$/, '');
+    if (!origin || cleanOrigin === cleanAllowed) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'));
+    }
+  },
   credentials: true
 }));
 
