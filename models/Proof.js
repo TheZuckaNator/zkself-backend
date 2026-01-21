@@ -46,7 +46,7 @@ const ProofSchema = new mongoose.Schema({
   // Nullifier to prevent double-use
   nullifierHash: {
     type: String,
-    required: true,
+    required: false,  // Changed from true - gets set after proof generation
     description: 'Prevents proof reuse for same context'
   },
   // External nullifier (context-specific)
@@ -123,7 +123,7 @@ const ProofSchema = new mongoose.Schema({
 
 // Indexes
 ProofSchema.index({ user: 1, proofType: 1 });
-ProofSchema.index({ nullifierHash: 1 }, { unique: true });
+ProofSchema.index({ nullifierHash: 1 }, { unique: true, sparse: true }); // Added sparse: true for null values
 ProofSchema.index({ status: 1 });
 ProofSchema.index({ validUntil: 1 });
 
