@@ -302,7 +302,7 @@ class SynapseService {
     return {
       isAdult: age !== null && age >= 18,
       isOver21: age !== null && age >= 21,
-      isHuman: verificationResults.liveness?.passed || false,
+      isHuman: verificationResults.liveness?.passed !== false,
       countryCode: countryCode,
       isNotSanctioned: countryCode ? !this.isCountrySanctioned(countryCode) : false,
       // Hash of verification data (for commitment)
